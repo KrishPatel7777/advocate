@@ -113,6 +113,8 @@ mongoose.connection.on('reconnected', () => {
 
 const caseRoutes = require('./routes/caseRoutes');
 
+const path = require("path");
+
 app.use(express.static(path.join(__dirname, "static")));
 
 app.get("/", (req, res) => {
