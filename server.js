@@ -3,17 +3,16 @@
  * Handles Express server setup, MongoDB connection, and route initialization
  */
 
-const path = require("path");
-
-app.use(express.static(path.join(__dirname, "static")));
-
-
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
+
+// ==================== STATIC FILES ====================
+app.use(express.static(path.join(__dirname, "static")));
 
 // ==================== INITIALIZE EXPRESS APP ====================
 const app = express();
@@ -113,8 +112,6 @@ mongoose.connection.on('reconnected', () => {
 // ==================== IMPORT ROUTES ====================
 
 const caseRoutes = require('./routes/caseRoutes');
-
-const path = require("path");
 
 app.use(express.static(path.join(__dirname, "static")));
 
