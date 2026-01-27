@@ -11,11 +11,12 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 
-// ==================== STATIC FILES ====================
-app.use(express.static(path.join(__dirname, "static")));
+
 
 // ==================== INITIALIZE EXPRESS APP ====================
 const app = express();
+// ==================== STATIC FILES ====================
+app.use(express.static(path.join(__dirname, "static")));
 
 // ==================== SECURITY MIDDLEWARE ====================
 
