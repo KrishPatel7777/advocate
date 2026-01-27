@@ -3,6 +3,11 @@
  * Handles Express server setup, MongoDB connection, and route initialization
  */
 
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "static")));
+
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
