@@ -1,0 +1,4 @@
+.env
+*.json
+node_modules/
+parshwa-shah-firebase-adminsdk-fbsvc-1158c15781.json

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advocate Case Management Dashboard">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <title>Dashboard - Advocate Reminder</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1e40af">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CaseReminder">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+<link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+<link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+<link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
+</head>
+<body>
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-left">
+                <div class="logo">⚖️ Advocate Reminder</div>
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <div class="header-right">
+                <button class="notification-btn" id="notificationBtn">
+                    <span class="notification-icon">🔔</span>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                
+                <div class="user-menu">
+                    <button class="user-btn" id="userBtn">
+                        <span class="user-avatar">👤</span>
+                        <span class="user-name" id="userName">User</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" class="dropdown-item">
+                            <span>⚙️</span> Settings
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <span>👤</span> Profile
+                        </a>
+                        <hr>
+                        <a href="#" class="dropdown-item" id="logoutBtn">
+                            <span>🚪</span> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-view="cases">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">All Cases</span>
+                </a>
+                <a href="#" class="nav-item" data-view="upcoming">
+                    <span class="nav-icon">⏰</span>
+                    <span class="nav-text">Upcoming</span>
+                </a>
+                <a href="#" class="nav-item" data-view="completed">
+                    <span class="nav-icon">✅</span>
+                    <span class="nav-text">Completed</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <!-- Dashboard View -->
+            <section id="dashboard-view" class="view active">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <button class="btn-primary" id="addCaseBtn">
+                        <span>➕</span> Add New Case
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">📋</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalCases">0</div>
+                            <div class="stat-label">Total Cases</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">⏰</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="upcomingCases">0</div>
+                            <div class="stat-label">Upcoming</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="completedCases">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">⚠️</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="urgentCases">0</div>
+                            <div class="stat-label">Urgent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-card" id="quickAddCase">
+                            <span class="action-icon">➕</span>
+                            <span class="action-text">Add Case</span>
+                        </button>
+                        <button class="action-card" id="viewUpcoming">
+                            <span class="action-icon">📅</span>
+                            <span class="action-text">View Calendar</span>
+                        </button>
+                        <button class="action-card" id="searchCase">
+                            <span class="action-icon">🔍</span>
+                            <span class="action-text">Search Cases</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Cases Table -->
+                <div class="recent-cases">
+                    <h2>Recent Cases</h2>
+                    <div class="table-container">
+                        <table class="cases-table" id="recentCasesTable">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Case Title</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentCasesBody">
+                                <tr class="empty-state">
+                                    <td colspan="5">
+                                        <div class="empty-message">
+                                            <span class="empty-icon">📋</span>
+                                            <p>No cases found. Click "Add New Case" to get started.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Cases View -->
+            <section id="cases-view" class="view">
+                <div class="page-header">
+                    <h1>All Cases</h1>
+                    <div class="header-actions">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search cases...">
+                        <button class="btn-primary" id="addCaseBtnAlt">
+                            <span>➕</span> Add Case
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="cases-table" id="allCasesTable">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Case Title</th>
+                                <th>Description</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allCasesBody">
+                            <tr class="empty-state">
+                                <td colspan="6">
+                                    <div class="empty-message">
+                                        <span class="empty-icon">📋</span>
+                                        <p>No cases found.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Upcoming Cases View -->
+            <section id="upcoming-view" class="view">
+                <div class="page-header">
+                    <h1>Upcoming Cases</h1>
+                </div>
+                <div class="cases-grid" id="upcomingCasesGrid">
+                    <div class="empty-message">
+                        <span class="empty-icon">⏰</span>
+                        <p>No upcoming cases.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Completed Cases View -->
+            <section id="completed-view" class="view">
+                <div class="page-header">
+                    <h1>Completed Cases</h1>
+                </div>
+                <div class="cases-grid" id="completedCasesGrid">
+                    <div class="empty-message">
+                        <span class="empty-icon">✅</span>
+                        <p>No completed cases yet.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Case Modal -->
+    <div class="modal" id="caseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Case</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="caseForm" class="modal-body">
+                <input type="hidden" id="caseId">
+                
+                <div class="form-group">
+                    <label for="clientName">Client Name *</label>
+                    <input type="text" id="clientName" required placeholder="Enter client name">
+                </div>
+
+                <div class="form-group">
+                    <label for="caseTitle">Case Title *</label>
+                    <input type="text" id="caseTitle" required placeholder="Enter case title">
+                </div>
+
+                <div class="form-group">
+                    <label for="caseDescription">Description *</label>
+                    <textarea id="caseDescription" rows="4" required placeholder="Enter case description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="dueDate">Due Date *</label>
+                    <input type="date" id="dueDate" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-text">Save Case</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Saving...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <p>Loading cases...</p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- External JavaScript -->
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
