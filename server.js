@@ -109,6 +109,19 @@ mongoose.connection.on('reconnected', () => {
 
 const caseRoutes = require('./routes/caseRoutes');
 
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "static")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "templates", "login.html"));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "templates", "dashboard.html"));
+});
+
+
 // ==================== API ROUTES ====================
 
 // Health check endpoint
