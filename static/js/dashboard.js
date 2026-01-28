@@ -58,7 +58,7 @@ window.addEventListener('load', async () => {
     document.getElementById('userName').textContent = userName;
     
     // Verify auth state with Firebase
-    auth.onAuthStateChanged(async (user) => {
+    /*auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
             // Refresh token
@@ -72,7 +72,7 @@ window.addEventListener('load', async () => {
             localStorage.clear();
             window.location.href = 'login.html';
         }
-    });
+    });*/
     
     // Initialize UI
     initializeUI();
