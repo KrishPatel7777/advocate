@@ -475,21 +475,22 @@ function handleAuthError(error) {
 // MONITOR AUTH STATE CHANGES
 // ========================================
 
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        console.log('👤 User authenticated:', user.email);
-        
-        // Refresh token periodically
-        try {
-            const idToken = await user.getIdToken(true);
-            localStorage.setItem('authToken', idToken);
-        } catch (error) {
-            console.error('❌ Token refresh error:', error);
+if (auth) {
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log('👤 User authenticated:', user.email);
+            try {
+                const idToken = await user.getIdToken(true);
+                localStorage.setItem('authToken', idToken);
+            } catch (error) {
+                console.error('❌ Token refresh error:', error);
+            }
+        } else {
+            console.log('👤 No user authenticated');
         }
-    } else {
-        console.log('👤 No user authenticated');
-    }
-});
+    });
+}
+
 
 // ========================================
 // REFRESH TOKEN BEFORE EXPIRY
