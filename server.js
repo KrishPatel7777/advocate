@@ -91,13 +91,21 @@ mongoose.connection.on("reconnected", () =>
 // ==================== ROUTES ====================
 const caseRoutes = require("./routes/caseRoutes");
 
+// Login page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "templates", "login.html"));
 });
 
+// Optional: also serve login.html explicitly
+app.get("/login.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "templates", "login.html"));
+});
+
+// Dashboard page
 app.get("/dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "templates", "dashboard.html"));
 });
+
 
 // ==================== API ROUTES ====================
 app.get("/api/health", (req, res) => {
