@@ -167,7 +167,7 @@ async function login() {
 
   if (data.success) {
     alert("Login successful");
-    window.location.href = "/dashboard.html";
+    window.location.href = "/templates/dashboard.html";
   } else {
     alert(data.message);
   }
