@@ -21,6 +21,11 @@ app.use(express.static(path.join(__dirname, "static")));
 // ==================== SECURITY MIDDLEWARE ====================
 app.use(helmet());
 
+import authRoutes from "./static/js/auth";
+
+app.use(express.json());
+app.use("/api/auth", authRoutes);
+
 const corsOptions = {
   origin: process.env.CLIENT_URL || "*",
   credentials: true,
