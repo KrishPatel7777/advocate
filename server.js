@@ -21,7 +21,9 @@ app.use(express.static(path.join(__dirname, "static")));
 // ==================== SECURITY MIDDLEWARE ====================
 app.use(helmet());
 
-import authRoutes from "./static/js/auth";
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
+
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
