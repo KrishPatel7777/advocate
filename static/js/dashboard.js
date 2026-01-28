@@ -48,17 +48,17 @@ window.addEventListener('load', async () => {
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'User';
     
-    if (!authToken || !userId) {
+    /*if (!authToken || !userId) {
         // Redirect to login if not authenticated
         window.location.href = 'login.html';
         return;
-    }
+    }*/
     
     // Set user name in header
     document.getElementById('userName').textContent = userName;
     
     // Verify auth state with Firebase
-    /*auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
             // Refresh token
@@ -72,7 +72,7 @@ window.addEventListener('load', async () => {
             localStorage.clear();
             window.location.href = 'login.html';
         }
-    });*/
+    });
     
     // Initialize UI
     initializeUI();
