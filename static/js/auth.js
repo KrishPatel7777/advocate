@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn === "true") {
         console.log('✅ Already logged in, redirecting...');
-        window.location.href = '/templates/dashboard.html';
+        window.location.href = '/dashboard';
     }
 });
 
@@ -61,7 +61,7 @@ loginForm.addEventListener('submit', (e) => {
             showNotification('Login successful! Redirecting...', 'success');
 
             setTimeout(() => {
-                window.location.href = '/templates/dashboard.html';
+                window.location.href = '/dashboard';
             }, 1000);
         } else {
             showNotification('Invalid email or password', 'error');
@@ -167,7 +167,7 @@ async function login() {
 
   if (data.success) {
     alert("Login successful");
-    window.location.href = "/templates/dashboard.html";
+    window.location.href = "/dashboard";
   } else {
     alert(data.message);
   }
