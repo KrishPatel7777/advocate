@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 });
 
 // ==================== MONGODB CONNECTION ====================
-const connectDB = async () => {
+/*const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log("========================================");
@@ -76,6 +76,11 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+connectDB();*/
+
+const connectDB = require('./config/db'); 
+
+// 2. Execute that imported function
 connectDB();
 
 mongoose.connection.on("error", (err) =>

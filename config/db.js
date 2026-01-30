@@ -51,6 +51,7 @@ const connectDB = async () => {
         process.exit(1);
     }
 };
+module.exports = connectDB;
 
 /**
  * Get human-readable connection state
