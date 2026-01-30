@@ -78,7 +78,7 @@ app.use((req, res, next) => {
 };
 connectDB();*/
 
-const connectDB = require('./config/db'); 
+const { connectDB } = require('./config/db');
 
 // 2. Execute that imported function
 connectDB();
