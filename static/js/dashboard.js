@@ -710,4 +710,8 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+document.addEventListener("DOMContentLoaded", () => {
+  initializeUI();
+});
+
 console.log('%c📊 Advocate Dashboard Loaded', 'color: #3498db; font-size: 16px; font-weight: bold;');
