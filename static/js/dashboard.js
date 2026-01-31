@@ -46,7 +46,6 @@ window.addEventListener('load', () => {
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
       localStorage.clear();
-      window.location.href = 'login.html';
       return;
     }
 
