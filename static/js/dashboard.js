@@ -54,6 +54,7 @@ window.addEventListener('load', () => {
 
         // ✅ Force fresh token
         authToken = await user.getIdToken(true);
+        console.log('🔥 Firebase Auth Token:', authToken);
         localStorage.setItem('authToken', authToken);
 
         const userName =
