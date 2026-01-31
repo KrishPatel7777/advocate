@@ -42,41 +42,30 @@ let currentEditId = null;
 // AUTH CHECK & INITIALIZATION
 // ========================================
 
-window.addEventListener('load', async () => {
-    // Check if user is logged in
-    authToken = localStorage.getItem('authToken');
-    const userId = localStorage.getItem('userId');
-    const userName = localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'User';
-    
-    /*if (!authToken || !userId) {
-        // Redirect to login if not authenticated
-        window.location.href = 'login.html';
-        return;
-    }*/
-    
-    // Set user name in header
-    document.getElementById('userName').textContent = userName;
-    
-    // Verify auth state with Firebase
+window.addEventListener('load', () => {
     auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            currentUser = user;
-            // Refresh token
-            authToken = await user.getIdToken();
-            localStorage.setItem('authToken', authToken);
-            
-            // Load cases
-            await loadAllCases();
-        } else {
-            // User not authenticated
+        if (!user) {
             localStorage.clear();
             window.location.href = 'login.html';
+            return;
         }
+
+        currentUser = user;
+
+        // ✅ Force fresh token
+        authToken = await user.getIdToken(true);
+        localStorage.setItem('authToken', authToken);
+
+        const userName =
+          user.displayName || user.email || 'User';
+        document.getElementById('userName').textContent = userName;
+
+        // ✅ Initialize AFTER auth
+        initializeUI();
+        await loadAllCases();
     });
-    
-    // Initialize UI
-    initializeUI();
 });
+
 
 // ========================================
 // UI INITIALIZATION
@@ -252,7 +241,11 @@ async function handleCaseSubmit(e) {
 }
 
 async function createCase(caseData) {
-    const response = await fetch(`/api/cases`, {
+    if (!authToken) {
+        throw new Error('Auth token missing');
+    }
+
+    const response = await fetch('/api/cases', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -260,14 +253,17 @@ async function createCase(caseData) {
         },
         body: JSON.stringify(caseData)
     });
-    
+
     if (!response.ok) {
+        const err = await response.text();
+        console.error(err);
         throw new Error('Failed to create case');
     }
-    
+
     showNotification('Case created successfully!', 'success');
     return await response.json();
 }
+
 
 async function updateCase(id, caseData) {
     const response = await fetch(`/api/cases/${id}`, {
@@ -646,45 +642,6 @@ function useMockData() {
     renderRecentCases();
     renderAllCases();
 }
- if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then((registration) => {
-          console.log('✅ Service Worker registered:', registration.scope);
-
-          // Check for updates periodically
-          setInterval(() => {
-            registration.update();
-          }, 60000); // Check every minute
-
-          // Listen for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New service worker available
-                if (confirm('New version available! Reload to update?')) {
-                  newWorker.postMessage({ type: 'SKIP_WAITING' });
-                  window.location.reload();
-                }
-              }
-            });
-          });
-        })
-        .catch((error) => {
-          console.error('❌ Service Worker registration failed:', error);
-        });
-
-      // Handle service worker controller change
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
-    });
-  } else {
-    console.warn('⚠️ Service Workers not supported in this browser');
-  }
 
   // Request notification permission on page load
   if ('Notification' in window && 'serviceWorker' in navigator) {
@@ -710,8 +667,15 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   initializeUI();
-});
+});*/
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then((reg) => console.log('✅ Service Worker registered'))
+    .catch((err) => console.error('❌ SW failed', err));
+}
 
 console.log('%c📊 Advocate Dashboard Loaded', 'color: #3498db; font-size: 16px; font-weight: bold;');
