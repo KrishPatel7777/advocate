@@ -36,6 +36,18 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; " +
+    "script-src 'self' https://www.gstatic.com; " +
+    "connect-src 'self' https://*.firebaseio.com https://identitytoolkit.googleapis.com; " +
+    "img-src 'self' data:; " +
+    "style-src 'self' 'unsafe-inline';"
+  );
+  next();
+});
+
 // ==================== RATE LIMITING ====================
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
