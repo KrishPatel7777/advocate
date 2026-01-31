@@ -52,7 +52,7 @@ window.addEventListener('load', () => {
     console.log("🟢 onAuthStateChanged fired");
 
     if (!user) {
-      window.location.href = "login.html";
+      //window.location.href = "login.html";
       return;
     }
 
