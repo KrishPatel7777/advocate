@@ -26,7 +26,7 @@ try {
 // API CONFIGURATION
 // ========================================
 
-const API_BASE_URL = 'http://localhost:5000/api'; // TODO: Replace with your backend URL
+const API_BASE_URL = '/api'; // TODO: Replace with your backend URL
 
 // ========================================
 // GLOBAL STATE
@@ -252,7 +252,7 @@ async function handleCaseSubmit(e) {
 }
 
 async function createCase(caseData) {
-    const response = await fetch(`${API_BASE_URL}/cases`, {
+    const response = await fetch(`/api/cases`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ async function createCase(caseData) {
 }
 
 async function updateCase(id, caseData) {
-    const response = await fetch(`${API_BASE_URL}/cases/${id}`, {
+    const response = await fetch(`/api/cases/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -293,7 +293,7 @@ async function deleteCase(id) {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/cases/${id}`, {
+        const response = await fetch(`/api/cases/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${authToken}`
@@ -317,7 +317,7 @@ async function loadAllCases() {
     loadingOverlay.classList.add('active');
     
     try {
-        const response = await fetch(`${API_BASE_URL}/cases`, {
+        const response = await fetch(`/api/cases`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -709,9 +709,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-document.addEventListener("DOMContentLoaded", () => {
-  initializeUI();
-});
 
 console.log('%c📊 Advocate Dashboard Loaded', 'color: #3498db; font-size: 16px; font-weight: bold;');
