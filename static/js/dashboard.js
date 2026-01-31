@@ -43,29 +43,41 @@ let currentEditId = null;
 // ========================================
 
 window.addEventListener('load', () => {
-    auth.onAuthStateChanged(async (user) => {
-        if (!user) {
-            localStorage.clear();
-            window.location.href = 'login.html';
-            return;
-        }
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      localStorage.clear();
+      window.location.href = 'login.html';
+      return;
+    }
 
-        currentUser = user;
+    currentUser = user;
 
-        // ✅ Force fresh token
-        authToken = await user.getIdToken(true);
-        console.log('🔥 Firebase Auth Token:', authToken);
-        localStorage.setItem('authToken', authToken);
+    // ✅ Get token FIRST
+    authToken = await user.getIdToken(true);
+    console.log('🔥 Firebase Auth Token:', authToken);
+    localStorage.setItem('authToken', authToken);
 
-        const userName =
-          user.displayName || user.email || 'User';
-        document.getElementById('userName').textContent = userName;
+    // ✅ MOVE YOUR CODE HERE 👇👇👇
+    if ('Notification' in window && 'serviceWorker' in navigator) {
+      Notification.requestPermission().then((permission) => {
+        console.log('Notification permission:', permission);
+      });
+    }
 
-        // ✅ Initialize AFTER auth
-        initializeUI();
-        await loadAllCases();
-    });
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => console.log('✅ Service Worker registered'))
+        .catch((err) => console.error('❌ SW failed', err));
+    }
+    // ✅ MOVE YOUR CODE HERE 👆👆👆
+
+    // ✅ Initialize UI AFTER auth + SW
+    initializeUI();
+    await loadAllCases();
+  });
 });
+
 
 
 // ========================================
@@ -644,12 +656,7 @@ function useMockData() {
     renderAllCases();
 }
 
-  // Request notification permission on page load
-  if ('Notification' in window && 'serviceWorker' in navigator) {
-    Notification.requestPermission().then((permission) => {
-      console.log('Notification permission:', permission);
-    });
-  }
+
 
 // ========================================
 // ANIMATIONS CSS
@@ -667,16 +674,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-document.addEventListener("DOMContentLoaded", () => {
-  initializeUI();
-});
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('/sw.js')
-    .then((reg) => console.log('✅ Service Worker registered'))
-    .catch((err) => console.error('❌ SW failed', err));
-}
-
 console.log('%c📊 Advocate Dashboard Loaded', 'color: #3498db; font-size: 16px; font-weight: bold;');
