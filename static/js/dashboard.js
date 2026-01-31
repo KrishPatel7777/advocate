@@ -667,9 +667,9 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-/*document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   initializeUI();
-});*/
+});
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
