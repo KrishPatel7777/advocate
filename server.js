@@ -15,14 +15,33 @@ const path = require("path");
 // ==================== INITIALIZE EXPRESS APP ====================
 const app = express();
 
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://www.gstatic.com",
+        ],
+        connectSrc: [
+          "'self'",
+          "https://*.firebaseio.com",
+          "https://identitytoolkit.googleapis.com",
+        ],
+        imgSrc: ["'self'", "data:"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  })
+);
+
 // ==================== STATIC FILES ====================
 app.use(express.static(path.join(__dirname, "static")));
 
 // ==================== SECURITY MIDDLEWARE ====================
-app.use(helmet());
 
 const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
 
 
 app.use(express.json());
@@ -36,17 +55,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; " +
-    "script-src 'self' https://www.gstatic.com; " +
-    "connect-src 'self' https://*.firebaseio.com https://identitytoolkit.googleapis.com; " +
-    "img-src 'self' data:; " +
-    "style-src 'self' 'unsafe-inline';"
-  );
-  next();
-});
 
 // ==================== RATE LIMITING ====================
 const limiter = rateLimit({
