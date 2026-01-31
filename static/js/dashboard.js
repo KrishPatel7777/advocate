@@ -2,6 +2,8 @@
 // FIREBASE CONFIGURATION
 // ========================================
 
+console.log("✅ dashboard.js loaded");
+
 // TODO: Replace with your Firebase project configuration
 const firebaseConfig = {
     apiKey: "AIzaSyD8YLh8_ZwqA9B44KaJ1sfr6DdAPPj4ADk",
@@ -25,8 +27,6 @@ try {
 // ========================================
 // API CONFIGURATION
 // ========================================
-
-const API_BASE_URL = '/api'; // TODO: Replace with your backend URL
 
 // ========================================
 // GLOBAL STATE
