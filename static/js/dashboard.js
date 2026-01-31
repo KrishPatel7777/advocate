@@ -43,40 +43,28 @@ let currentEditId = null;
 // ========================================
 
 window.addEventListener('load', () => {
+  if (!auth) {
+    console.error("❌ auth not ready");
+    return;
+  }
+
   auth.onAuthStateChanged(async (user) => {
+    console.log("🟢 onAuthStateChanged fired");
+
     if (!user) {
-      localStorage.clear();
-      //window.location.href = 'login.html';
+      window.location.href = "login.html";
       return;
     }
 
     currentUser = user;
-
-    // ✅ Get token FIRST
     authToken = await user.getIdToken(true);
-    console.log('🔥 Firebase Auth Token:', authToken);
-    localStorage.setItem('authToken', authToken);
+    localStorage.setItem("authToken", authToken);
 
-    // ✅ MOVE YOUR CODE HERE 👇👇👇
-    if ('Notification' in window && 'serviceWorker' in navigator) {
-      Notification.requestPermission().then((permission) => {
-        console.log('Notification permission:', permission);
-      });
-    }
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then((reg) => console.log('✅ Service Worker registered'))
-        .catch((err) => console.error('❌ SW failed', err));
-    }
-    // ✅ MOVE YOUR CODE HERE 👆👆👆
-
-    // ✅ Initialize UI AFTER auth + SW
     initializeUI();
     await loadAllCases();
   });
 });
+
 
 
 
@@ -85,6 +73,7 @@ window.addEventListener('load', () => {
 // ========================================
 
 function initializeUI() {
+    console.log("🟢 initializeUI CALLED");
     // Sidebar navigation
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
